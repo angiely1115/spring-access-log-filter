@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="logFilePath">$${env:B_LOGPATH}/</Property>
+    </Properties>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%p][%d{MMdd HH:mm:ss SSS}] - %m%n"/>
+            <Charset>UTF-8</Charset>
+        </Console>
+        <RollingFile name="errorFileAppender"
+                     fileName="${logFilePath}/error.log"
+                     filePattern="${logFilePath}/error-%d{MM-dd-yyyy-ss}.log.gz"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%m%n</Pattern>
+                <Charset>UTF-8</Charset>
+            </PatternLayout>
+            <SizeBasedTriggeringPolicy size="25 MB"/>
+        </RollingFile>
+        <!-- 业务日志，记录业务事件，用于业务打点 -->
+        <RollingFile name="businessFileAppender" fileName="${logFilePath}/business.log"
+                     filePattern="${logFilePath}/business-%d{MM-dd-yyyy}.log.gz"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%m%n</Pattern>
+                <Charset>UTF-8</Charset>
+            </PatternLayout>
+            <TimeBasedTriggeringPolicy/>
+        </RollingFile>
+        <!-- Access日志，记录请求事件用于记录请求 -->
+        <RollingFile name="accessFileAppender" fileName="${logFilePath}/access.log"
+                     filePattern="${logFilePath}/access-%d{MM-dd-yyyy}.log.gz"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%m%n</Pattern>
+                <Charset>UTF-8</Charset>
+            </PatternLayout>
+            <TimeBasedTriggeringPolicy/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="Business" level="info">
+            <AppenderRef ref="businessFileAppender"/>
+        </Logger>
+        <Logger name="Access" level="info">
+            <AppenderRef ref="accessFileAppender">
+            </AppenderRef>
+        </Logger>
+        <Logger name="Error" additivity="true" level="info">
+            <AppenderRef ref="errorFileAppender">
+            </AppenderRef>
+        </Logger>
+
+        <Root level="info">
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>
