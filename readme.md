@@ -41,4 +41,7 @@ example：
 
 you can change the log format by edit the log4j2.xml 
 	
-	
+
+for more detail please check my blog
+
+[http://laiyijie.me/2017/07/13/spring-accesslog-filter/](http://laiyijie.me/2017/07/13/spring-accesslog-filter/)
